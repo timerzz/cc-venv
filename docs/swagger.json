@@ -1,0 +1,1067 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ccv API",
+    "description": "Claude Code Environment Manager API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/envs": {
+      "get": {
+        "summary": "List all environments",
+        "tags": ["Environments"],
+        "responses": {
+          "200": {
+            "description": "List of environments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "envs": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/EnvListItem"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new environment",
+        "tags": ["Environments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEnvRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Environment created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "path": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envs/{name}": {
+      "get": {
+        "summary": "Get environment details",
+        "tags": ["Environments"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Environment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/EnvDetail"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Environment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update environment",
+        "tags": ["Environments"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEnvRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Environment updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "renamed": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Environment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete environment",
+        "tags": ["Environments"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Environment deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Environment not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envs/{name}/export": {
+      "post": {
+        "summary": "Export environment to tar.gz",
+        "tags": ["Environments"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "filename": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envs/import": {
+      "post": {
+        "summary": "Import environment from tar.gz",
+        "tags": ["Environments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "force": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Import successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "path": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envs/{name}/llm": {
+      "get": {
+        "summary": "Get LLM configuration",
+        "tags": ["LLM"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "LLM configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/LLMConfig"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update LLM configuration",
+        "tags": ["LLM"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLLMConfigRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "LLM configuration updated"
+          }
+        }
+      }
+    },
+    "/llm/providers": {
+      "get": {
+        "summary": "List available LLM providers",
+        "tags": ["LLM"],
+        "responses": {
+          "200": {
+            "description": "List of LLM providers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "providers": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/LLMProvider"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envs/{name}/mcp": {
+      "get": {
+        "summary": "List MCP servers",
+        "tags": ["MCP"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of MCP servers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/MCPListResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add MCP server",
+        "tags": ["MCP"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddMCPRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "MCP server added"
+          }
+        }
+      }
+    },
+    "/envs/{name}/mcp/{server}": {
+      "put": {
+        "summary": "Update MCP server",
+        "tags": ["MCP"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "server",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMCPRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "MCP server updated"
+          },
+          "404": {
+            "description": "MCP server not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete MCP server",
+        "tags": ["MCP"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "server",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "MCP server deleted"
+          },
+          "404": {
+            "description": "MCP server not found"
+          }
+        }
+      }
+    },
+    "/envs/{name}/skills": {
+      "get": {
+        "summary": "List skills",
+        "tags": ["Skills"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of skills",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SkillListResponse"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add skill (URL or file upload)",
+        "tags": ["Skills"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddSkillRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Skill added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/SkillInfo"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envs/{name}/skills/{skill}": {
+      "delete": {
+        "summary": "Delete skill",
+        "tags": ["Skills"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skill",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Skill deleted"
+          },
+          "404": {
+            "description": "Skill not found"
+          }
+        }
+      }
+    },
+    "/downloads/{filename}": {
+      "get": {
+        "summary": "Download exported file",
+        "tags": ["Downloads"],
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File download",
+            "content": {
+              "application/gzip": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EnvListItem": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "resources": {
+            "$ref": "#/components/schemas/ResourceCounts"
+          }
+        }
+      },
+      "ResourceCounts": {
+        "type": "object",
+        "properties": {
+          "skills": {
+            "type": "integer"
+          },
+          "agents": {
+            "type": "integer"
+          },
+          "commands": {
+            "type": "integer"
+          },
+          "rules": {
+            "type": "integer"
+          },
+          "hooks": {
+            "type": "integer"
+          },
+          "mcpServers": {
+            "type": "integer"
+          }
+        }
+      },
+      "EnvDetail": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "claudeMd": {
+            "type": "string"
+          },
+          "settings": {
+            "type": "object",
+            "additionalProperties": {}
+          },
+          "envVars": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "mcpServers": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/MCPServer"
+            }
+          },
+          "resources": {
+            "$ref": "#/components/schemas/ResourceLists"
+          }
+        }
+      },
+      "ResourceLists": {
+        "type": "object",
+        "properties": {
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "agents": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hooks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "plugins": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MCPServer": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string"
+          },
+          "args": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "env": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateEnvRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateEnvRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "claudeMd": {
+            "type": "string"
+          },
+          "envVars": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LLMConfig": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "baseUrl": {
+            "type": "string"
+          },
+          "models": {
+            "$ref": "#/components/schemas/LLMModelsConfig"
+          }
+        }
+      },
+      "LLMModelsConfig": {
+        "type": "object",
+        "properties": {
+          "default": {
+            "type": "string"
+          },
+          "sonnet": {
+            "type": "string"
+          },
+          "opus": {
+            "type": "string"
+          },
+          "haiku": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateLLMConfigRequest": {
+        "type": "object",
+        "properties": {
+          "apiKey": {
+            "type": "string"
+          },
+          "baseUrl": {
+            "type": "string"
+          },
+          "models": {
+            "$ref": "#/components/schemas/LLMModelsConfig"
+          }
+        }
+      },
+      "LLMProvider": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "baseUrl": {
+            "type": "string"
+          },
+          "models": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MCPListResponse": {
+        "type": "object",
+        "properties": {
+          "servers": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/MCPServer"
+            }
+          }
+        }
+      },
+      "AddMCPRequest": {
+        "type": "object",
+        "required": ["name", "config"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "config": {
+            "$ref": "#/components/schemas/MCPServer"
+          }
+        }
+      },
+      "UpdateMCPRequest": {
+        "type": "object",
+        "required": ["config"],
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/MCPServer"
+          }
+        }
+      },
+      "SkillInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "SkillListResponse": {
+        "type": "object",
+        "properties": {
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillInfo"
+            }
+          }
+        }
+      },
+      "AddSkillRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "example": 1
+          },
+          "msg": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
