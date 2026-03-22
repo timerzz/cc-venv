@@ -1,11 +1,11 @@
-# ccv
+# @timerzz/ccv
 
-`ccv` is a Claude Code virtual environment manager.
+`@timerzz/ccv` is a Claude Code virtual environment manager.
 
 Install globally:
 
 ```bash
-npm install -g ccv
+npm install -g @timerzz/ccv
 ```
 
 The package resolves the correct platform binary from optional dependencies and

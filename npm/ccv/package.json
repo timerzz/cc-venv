@@ -1,5 +1,5 @@
 {
-  "name": "ccv",
+  "name": "@timerzz/ccv",
   "version": "0.1.0",
   "description": "Claude Code virtual environment manager",
   "license": "MIT",

@@ -84,7 +84,7 @@
 ### 方式一：npm 全局安装
 
 ```bash
-npm install -g ccv
+npm install -g @timerzz/ccv
 ```
 
 安装完成后可以直接使用：

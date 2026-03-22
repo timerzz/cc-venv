@@ -85,7 +85,7 @@ then `cc-venv` is the closer fit.
 ### Option 1: Install globally with npm
 
 ```bash
-npm install -g ccv
+npm install -g @timerzz/ccv
 ```
 
 After installation:
