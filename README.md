@@ -110,13 +110,19 @@ Download the binary for your platform from GitHub Releases and add it to your `P
 Common commands:
 
 ```bash
+# Create a virtual environment named coding
 ccv create coding
-ccv create writing
-ccv list
-ccv active coding
-ccv run coding
+# Open the Web UI to manage and configure environments
 ccv web
+# List all current virtual environments
+ccv list
+# Run Claude Code inside the coding environment
+ccv run coding
+# Export the full coding environment, including Skills and MCP configuration
+ccv export coding
 ```
+
+<img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
 
 ## What is isolated inside an environment
 

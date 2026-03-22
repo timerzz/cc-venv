@@ -117,6 +117,8 @@ ccv web
 ccv list
 # 进入coding虚拟环境中的claude code
 ccv run coding
+# 导出coding虚拟环境的所有配置、包括skills、mcp等
+ccv exprot coding
 ```
 <img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
 
