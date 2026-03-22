@@ -109,13 +109,17 @@ ccv web
 常用命令：
 
 ```bash
+# 创建一个名为coding的虚拟环境
 ccv create coding
-ccv create writing
-ccv list
-ccv active coding
-ccv run coding
+# 打开web页面对虚拟环境进行管理和配置
 ccv web
+# 查看当前所有虚拟环境
+ccv list
+# 进入coding虚拟环境中的claude code
+ccv run coding
 ```
+<img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
+
 
 ## 环境里隔离的内容
 
