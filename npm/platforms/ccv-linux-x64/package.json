@@ -1,0 +1,15 @@
+{
+  "name": "@timerzz/ccv-linux-x64",
+  "version": "0.1.0",
+  "description": "Linux x64 binary for ccv",
+  "license": "MIT",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "bin/ccv"
+  ]
+}

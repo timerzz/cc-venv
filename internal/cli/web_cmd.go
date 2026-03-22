@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/timerzz/cc-venv/internal/webui"
+	"github.com/timerzz/cc-venv/internal/web"
 )
 
 func newWebCmd() *cobra.Command {
@@ -23,19 +23,19 @@ The server provides a REST API for environment management and serves a web UI.
 By default, it opens your browser automatically.`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfg := webui.Config{
+			cfg := web.Config{
 				Port:    port,
 				DevMode: devMode,
 				NoOpen:  noOpen,
 			}
 
-			server := webui.NewServer(cfg)
+			server := web.NewServer(cfg)
 
 			// 启动浏览器
 			if !noOpen {
 				go func() {
 					url := fmt.Sprintf("http://localhost:%d", port)
-					if err := webui.OpenBrowser(url); err != nil {
+					if err := web.OpenBrowser(url); err != nil {
 						fmt.Printf("warning: failed to open browser: %v\n", err)
 					}
 				}()

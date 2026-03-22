@@ -1,0 +1,158 @@
+<svg width="1600" height="1100" viewBox="0 0 1600 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="1100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFE8DD"/>
+      <stop offset="0.55" stop-color="#E6DDCF"/>
+      <stop offset="1" stop-color="#DDD2C1"/>
+    </linearGradient>
+    <linearGradient id="shell" x1="256" y1="116" x2="1388" y2="1001" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1B2024"/>
+      <stop offset="1" stop-color="#111518"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#E87745"/>
+      <stop offset="1" stop-color="#D15B33"/>
+    </linearGradient>
+    <linearGradient id="softGreen" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#87966F"/>
+      <stop offset="1" stop-color="#73845B"/>
+    </linearGradient>
+    <linearGradient id="slate" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#242B31"/>
+      <stop offset="1" stop-color="#1E242A"/>
+    </linearGradient>
+    <filter id="windowShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#5E5146" flood-opacity="0.18"/>
+    </filter>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000000" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1100" fill="url(#bg)"/>
+  <path d="M1452 0C1535 54 1595 149 1600 288V0H1452Z" fill="#F6ECE3" fill-opacity="0.9"/>
+  <circle cx="1434" cy="164" r="208" fill="#E87745" fill-opacity="0.08"/>
+  <circle cx="118" cy="930" r="258" fill="#7D8B67" fill-opacity="0.08"/>
+  <path d="M0 1008C99 878 186 840 318 838C171 935 105 1023 58 1100H0V1008Z" fill="#F4EEE6" fill-opacity="0.8"/>
+
+  <text x="82" y="72" fill="#191817" font-family="Georgia, serif" font-size="40" font-weight="700">CCV Web</text>
+  <text x="242" y="72" fill="#6A6258" font-family="Arial, sans-serif" font-size="20">Local Environment Console</text>
+  <text x="84" y="105" fill="#72695D" font-family="Arial, sans-serif" font-size="18">高保真方向稿：偏开发工具气质，信息密度高，状态清晰，危险操作后置</text>
+
+  <g filter="url(#windowShadow)">
+    <rect x="54" y="136" width="1492" height="896" rx="34" fill="url(#shell)"/>
+  </g>
+
+  <rect x="54" y="136" width="1492" height="42" rx="34" fill="#14181C"/>
+  <circle cx="88" cy="157" r="6" fill="#E87745"/>
+  <circle cx="108" cy="157" r="6" fill="#E2B560"/>
+  <circle cx="128" cy="157" r="6" fill="#7D8B67"/>
+  <text x="706" y="162" fill="#6E767E" font-family="Arial, sans-serif" font-size="13" letter-spacing="3">ccv web / workspace control surface</text>
+
+  <rect x="76" y="198" width="292" height="812" rx="28" fill="#151A1E"/>
+  <rect x="392" y="198" width="1132" height="812" rx="28" fill="#181D22"/>
+
+  <text x="108" y="250" fill="#8C949C" font-family="Arial, sans-serif" font-size="13" letter-spacing="4">ENVIRONMENTS</text>
+  <rect x="108" y="270" width="228" height="46" rx="15" fill="#20262C"/>
+  <circle cx="132" cy="293" r="8" stroke="#6F7881" stroke-width="2"/>
+  <line x1="138" y1="299" x2="145" y2="306" stroke="#6F7881" stroke-width="2" stroke-linecap="round"/>
+  <text x="156" y="299" fill="#707983" font-family="Arial, sans-serif" font-size="15">Search environments</text>
+
+  <rect x="108" y="340" width="228" height="124" rx="22" fill="url(#hero)"/>
+  <text x="130" y="372" fill="#FFF2EA" font-family="Arial, sans-serif" font-size="13" letter-spacing="2">ACTIVE ENV</text>
+  <text x="130" y="414" fill="white" font-family="Georgia, serif" font-size="34" font-weight="700">workbench</text>
+  <text x="130" y="444" fill="#FFE5D8" font-family="Arial, sans-serif" font-size="15">12 resources configured</text>
+  <text x="130" y="468" fill="#FFE5D8" font-family="Arial, sans-serif" font-size="15">Updated 2 minutes ago</text>
+
+  <rect x="108" y="486" width="228" height="88" rx="18" fill="#21282E"/>
+  <text x="130" y="522" fill="#F0E8DE" font-family="Arial, sans-serif" font-size="26" font-weight="700">demo</text>
+  <text x="130" y="548" fill="#8C949C" font-family="Arial, sans-serif" font-size="14">4 resources · starter setup</text>
+
+  <rect x="108" y="590" width="228" height="88" rx="18" fill="#21282E"/>
+  <text x="130" y="626" fill="#F0E8DE" font-family="Arial, sans-serif" font-size="26" font-weight="700">prod-safe</text>
+  <text x="130" y="652" fill="#8C949C" font-family="Arial, sans-serif" font-size="14">9 resources · locked config</text>
+
+  <rect x="108" y="694" width="228" height="88" rx="18" fill="#21282E"/>
+  <text x="130" y="730" fill="#F0E8DE" font-family="Arial, sans-serif" font-size="26" font-weight="700">research</text>
+  <text x="130" y="756" fill="#8C949C" font-family="Arial, sans-serif" font-size="14">7 resources · temp keys</text>
+
+  <rect x="108" y="878" width="228" height="60" rx="18" fill="url(#softGreen)"/>
+  <text x="155" y="915" fill="#F8F3EC" font-family="Arial, sans-serif" font-size="18" font-weight="700">+ Create Environment</text>
+
+  <text x="422" y="248" fill="#828B94" font-family="Arial, sans-serif" font-size="13" letter-spacing="4">CURRENT ENVIRONMENT</text>
+  <text x="422" y="292" fill="#F5EEE6" font-family="Georgia, serif" font-size="48" font-weight="700">workbench</text>
+  <text x="717" y="292" fill="#6B747C" font-family="Arial, sans-serif" font-size="16">/home/user/.ccv/envs/workbench</text>
+  <text x="422" y="321" fill="#8E969E" font-family="Arial, sans-serif" font-size="16">用于新实验的默认环境，允许快速装配 LLM、MCP、Skills 和环境变量。</text>
+
+  <rect x="1204" y="234" width="102" height="42" rx="14" fill="#232A31"/>
+  <text x="1234" y="260" fill="#EEE6DB" font-family="Arial, sans-serif" font-size="15">Export</text>
+  <rect x="1320" y="234" width="174" height="42" rx="14" fill="url(#hero)"/>
+  <text x="1362" y="260" fill="white" font-family="Arial, sans-serif" font-size="15" font-weight="700">Import / Create</text>
+
+  <g filter="url(#cardShadow)">
+    <rect x="422" y="360" width="246" height="170" rx="24" fill="url(#slate)"/>
+  </g>
+  <text x="448" y="395" fill="#8A929A" font-family="Arial, sans-serif" font-size="13" letter-spacing="3">LLM</text>
+  <text x="448" y="439" fill="#F3ECE4" font-family="Georgia, serif" font-size="34" font-weight="700">Anthropic</text>
+  <text x="448" y="468" fill="#A6AFB7" font-family="Arial, sans-serif" font-size="16">Default model: claude-sonnet</text>
+  <rect x="448" y="488" width="94" height="30" rx="11" fill="#31424B"/>
+  <text x="477" y="508" fill="#D0E7F2" font-family="Arial, sans-serif" font-size="14">Healthy</text>
+
+  <g filter="url(#cardShadow)">
+    <rect x="686" y="360" width="246" height="170" rx="24" fill="url(#slate)"/>
+  </g>
+  <text x="712" y="395" fill="#8A929A" font-family="Arial, sans-serif" font-size="13" letter-spacing="3">MCP</text>
+  <text x="712" y="439" fill="#F3ECE4" font-family="Georgia, serif" font-size="34" font-weight="700">3 Servers</text>
+  <text x="712" y="468" fill="#A6AFB7" font-family="Arial, sans-serif" font-size="16">filesystem · github · postgres</text>
+  <rect x="712" y="488" width="88" height="30" rx="11" fill="#415032"/>
+  <text x="742" y="508" fill="#DAE9C7" font-family="Arial, sans-serif" font-size="14">Ready</text>
+
+  <g filter="url(#cardShadow)">
+    <rect x="950" y="360" width="246" height="170" rx="24" fill="url(#slate)"/>
+  </g>
+  <text x="976" y="395" fill="#8A929A" font-family="Arial, sans-serif" font-size="13" letter-spacing="3">SKILLS</text>
+  <text x="976" y="439" fill="#F3ECE4" font-family="Georgia, serif" font-size="34" font-weight="700">12 Installed</text>
+  <text x="976" y="468" fill="#A6AFB7" font-family="Arial, sans-serif" font-size="16">frontend-design · harness · openai-docs</text>
+  <rect x="976" y="488" width="118" height="30" rx="11" fill="#4A3C2E"/>
+  <text x="1005" y="508" fill="#F1DFC9" font-family="Arial, sans-serif" font-size="14">Needs review</text>
+
+  <g filter="url(#cardShadow)">
+    <rect x="1214" y="360" width="280" height="170" rx="24" fill="url(#hero)"/>
+  </g>
+  <text x="1240" y="395" fill="#FFE8DD" font-family="Arial, sans-serif" font-size="13" letter-spacing="4">ENV VARS</text>
+  <text x="1240" y="445" fill="white" font-family="Georgia, serif" font-size="42" font-weight="700">24 Keys</text>
+  <text x="1240" y="478" fill="#FFE5D8" font-family="Arial, sans-serif" font-size="16">OpenAI / Anthropic / custom toolchain</text>
+  <text x="1240" y="510" fill="#FFF2EA" font-family="Arial, sans-serif" font-size="15">Sensitive values masked until explicit reveal</text>
+
+  <rect x="422" y="560" width="1072" height="64" rx="20" fill="#1E2429"/>
+  <rect x="438" y="574" width="126" height="36" rx="12" fill="#EFE5D9"/>
+  <text x="472" y="597" fill="#171C21" font-family="Arial, sans-serif" font-size="15" font-weight="700">Overview</text>
+  <text x="591" y="597" fill="#8F98A1" font-family="Arial, sans-serif" font-size="15">LLM</text>
+  <text x="667" y="597" fill="#8F98A1" font-family="Arial, sans-serif" font-size="15">MCP</text>
+  <text x="750" y="597" fill="#8F98A1" font-family="Arial, sans-serif" font-size="15">Skills</text>
+  <text x="841" y="597" fill="#8F98A1" font-family="Arial, sans-serif" font-size="15">Env Vars</text>
+  <text x="953" y="597" fill="#8F98A1" font-family="Arial, sans-serif" font-size="15">CLAUDE.md</text>
+  <text x="1092" y="597" fill="#8F98A1" font-family="Arial, sans-serif" font-size="15">Import / Export</text>
+
+  <rect x="422" y="648" width="702" height="330" rx="26" fill="#20262C"/>
+  <text x="452" y="688" fill="#8A929A" font-family="Arial, sans-serif" font-size="13" letter-spacing="4">OVERVIEW</text>
+  <text x="452" y="734" fill="#F6EEE5" font-family="Georgia, serif" font-size="36" font-weight="700">Environment Notes</text>
+  <text x="452" y="768" fill="#94A0AA" font-family="Arial, sans-serif" font-size="17">这里展示 `CLAUDE.md` 摘要、说明文字和这个环境的使用约定。</text>
+  <rect x="452" y="792" width="642" height="2" fill="#313942"/>
+  <text x="452" y="832" fill="#B0BAC3" font-family="Arial, sans-serif" font-size="18"># Workbench</text>
+  <text x="452" y="868" fill="#B0BAC3" font-family="Arial, sans-serif" font-size="18">- 默认 sandbox，用于快速试验和临时资源组合</text>
+  <text x="452" y="902" fill="#B0BAC3" font-family="Arial, sans-serif" font-size="18">- 已预装 filesystem MCP、前端设计技能和基础模型配置</text>
+  <text x="452" y="936" fill="#B0BAC3" font-family="Arial, sans-serif" font-size="18">- 可导出分享，但不用于长期保存生产密钥</text>
+  <rect x="452" y="948" width="150" height="32" rx="12" fill="#2C343B"/>
+  <text x="492" y="969" fill="#ECE3D8" font-family="Arial, sans-serif" font-size="14">Edit Notes</text>
+
+  <rect x="1148" y="648" width="346" height="330" rx="26" fill="#20262C"/>
+  <text x="1178" y="688" fill="#8A929A" font-family="Arial, sans-serif" font-size="13" letter-spacing="4">QUICK ACTIONS</text>
+  <rect x="1178" y="714" width="286" height="62" rx="18" fill="#262D34"/>
+  <text x="1210" y="752" fill="#F2EBE2" font-family="Arial, sans-serif" font-size="19">Test MCP connections</text>
+  <rect x="1178" y="790" width="286" height="62" rx="18" fill="#262D34"/>
+  <text x="1210" y="828" fill="#F2EBE2" font-family="Arial, sans-serif" font-size="19">Rotate provider keys</text>
+  <rect x="1178" y="866" width="286" height="62" rx="18" fill="#5A2D23"/>
+  <text x="1210" y="904" fill="#FFE9DE" font-family="Arial, sans-serif" font-size="19">Delete environment</text>
+  <text x="1178" y="950" fill="#8E969F" font-family="Arial, sans-serif" font-size="14">高风险动作固定放在右下角，和配置编辑区分层。</text>
+</svg>

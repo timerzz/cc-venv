@@ -12,7 +12,10 @@ import (
 
 // MCPServerConfig MCP 服务器配置
 type MCPServerConfig struct {
-	Command string            `json:"command"`
+	Type    string            `json:"type,omitempty"`
+	URL     string            `json:"url,omitempty"`
+	Headers map[string]string `json:"headers,omitempty"`
+	Command string            `json:"command,omitempty"`
 	Args    []string          `json:"args,omitempty"`
 	Env     map[string]string `json:"env,omitempty"`
 }

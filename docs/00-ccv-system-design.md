@@ -91,6 +91,13 @@
 - `.claude.json`：环境级 MCP / 用户级配置镜像
 - `ccv.json`：环境摘要与导出信息
 
+创建环境时的默认继承策略：
+
+- 若 `~/.claude/CLAUDE.md` 存在，则复制到环境的 `.claude/CLAUDE.md`
+- 若 `~/.claude/settings.json` 中存在 `env`，则复制到环境的 `.claude/settings.json`
+- 若 `~/.claude.json` 存在，则复制到环境根目录的 `.claude.json`
+- 若默认文件不存在，则回退到最小初始化模板
+
 第一版明确不做：
 
 - `vendor`
@@ -192,7 +199,7 @@ cc-venv/
 ├── internal/exporter/
 ├── internal/importer/
 ├── internal/archive/
-├── internal/webui/
+├── internal/web/
 └── internal/platform/
 ```
 
@@ -204,7 +211,7 @@ cc-venv/
 - `internal/exporter`：导出编排
 - `internal/importer`：导入编排
 - `internal/archive`：tar.gz 和 checksums
-- `internal/webui`：本地 Web 服务
+- `internal/web`：本地 Web 服务
 - `internal/platform`：home 目录和平台差异
 
 ---

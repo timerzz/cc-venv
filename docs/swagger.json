@@ -643,7 +643,7 @@
         }
       },
       "post": {
-        "summary": "Add skill (URL or file upload)",
+        "summary": "Install skill from uploaded zip archive",
         "tags": ["Skills"],
         "parameters": [
           {
@@ -657,11 +657,6 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddSkillRequest"
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "type": "object",
@@ -726,6 +721,148 @@
           },
           "404": {
             "description": "Skill not found"
+          }
+        }
+      }
+    },
+    "/envs/{name}/resources/{kind}": {
+      "get": {
+        "summary": "List resource files",
+        "tags": ["Resources"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["agents", "commands", "rules"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of resource file names"
+          }
+        }
+      }
+    },
+    "/envs/{name}/resources/{kind}/content": {
+      "get": {
+        "summary": "Get resource file content",
+        "tags": ["Resources"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["agents", "commands", "rules"]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource file content"
+          }
+        }
+      },
+      "put": {
+        "summary": "Create or update a resource file",
+        "tags": ["Resources"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["agents", "commands", "rules"]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResourceFileRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resource file saved"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a resource file",
+        "tags": ["Resources"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["agents", "commands", "rules"]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resource file deleted"
           }
         }
       }
@@ -879,6 +1016,19 @@
       "MCPServer": {
         "type": "object",
         "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["stdio", "http"]
+          },
+          "url": {
+            "type": "string"
+          },
+          "headers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
           "command": {
             "type": "string"
           },
@@ -1041,12 +1191,15 @@
           }
         }
       },
-      "AddSkillRequest": {
+      "ResourceFileRequest": {
         "type": "object",
+        "required": ["name"],
         "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri"
+          "name": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
           }
         }
       },

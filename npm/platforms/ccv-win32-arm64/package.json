@@ -1,0 +1,15 @@
+{
+  "name": "@timerzz/ccv-win32-arm64",
+  "version": "0.1.0",
+  "description": "Windows arm64 binary for ccv",
+  "license": "MIT",
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "bin/ccv.exe"
+  ]
+}

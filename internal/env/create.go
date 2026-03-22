@@ -49,29 +49,88 @@ func createLayout(e Environment) error {
 		return err
 	}
 
-	// Create CLAUDE.md in .claude/
+	// Create CLAUDE.md in .claude/, preferring the user's default Claude memory
 	claudeMdPath := filepath.Join(e.EnvDir, ".claude", "CLAUDE.md")
-	if err := os.WriteFile(claudeMdPath, []byte("# "+e.Name+"\n\n"), 0o644); err != nil {
+	claudeMdContent, err := initialClaudeMDContent(e.Name)
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(claudeMdPath, claudeMdContent, 0o644); err != nil {
 		return fmt.Errorf("create CLAUDE.md: %w", err)
 	}
 
 	// Create empty .claude.json for MCP configuration
 	claudeJsonPath := filepath.Join(e.EnvDir, ".claude.json")
-	if err := os.WriteFile(claudeJsonPath, []byte("{}\n"), 0o644); err != nil {
+	claudeJSONContent, err := initialClaudeJSONContent()
+	if err != nil {
+		return err
+	}
+	if err := os.WriteFile(claudeJsonPath, claudeJSONContent, 0o644); err != nil {
 		return fmt.Errorf("create .claude.json: %w", err)
 	}
 
 	// Create settings.json in .claude/
 	settingsJsonPath := filepath.Join(e.EnvDir, ".claude", "settings.json")
-	settingsContent := `{
-  "env": {}
-}
-`
-	if err := os.WriteFile(settingsJsonPath, []byte(settingsContent), 0o644); err != nil {
+	initialEnvVars, err := initialSettingsEnvVars()
+	if err != nil {
+		return err
+	}
+	if err := config.WriteSettingsJSONEnv(settingsJsonPath, initialEnvVars); err != nil {
 		return fmt.Errorf("create settings.json: %w", err)
 	}
 
 	return nil
+}
+
+func initialClaudeMDContent(envName string) ([]byte, error) {
+	home, err := platform.HomeDir()
+	if err != nil {
+		return nil, err
+	}
+
+	defaultClaudeMdPath := filepath.Join(home, ".claude", "CLAUDE.md")
+	data, err := os.ReadFile(defaultClaudeMdPath)
+	if err == nil {
+		return data, nil
+	}
+	if !os.IsNotExist(err) {
+		return nil, fmt.Errorf("read default CLAUDE.md: %w", err)
+	}
+
+	return []byte("# " + envName + "\n\n"), nil
+}
+
+func initialSettingsEnvVars() (config.EnvVars, error) {
+	home, err := platform.HomeDir()
+	if err != nil {
+		return nil, err
+	}
+
+	defaultSettingsPath := filepath.Join(home, ".claude", "settings.json")
+	envVars, err := config.ReadSettingsJSONEnv(defaultSettingsPath)
+	if err != nil {
+		return nil, fmt.Errorf("read default settings.json: %w", err)
+	}
+
+	return envVars, nil
+}
+
+func initialClaudeJSONContent() ([]byte, error) {
+	home, err := platform.HomeDir()
+	if err != nil {
+		return nil, err
+	}
+
+	defaultClaudeJSONPath := filepath.Join(home, ".claude.json")
+	data, err := os.ReadFile(defaultClaudeJSONPath)
+	if err == nil {
+		return data, nil
+	}
+	if !os.IsNotExist(err) {
+		return nil, fmt.Errorf("read default .claude.json: %w", err)
+	}
+
+	return []byte("{}\n"), nil
 }
 
 func Load(name string) (Environment, error) {
@@ -179,7 +238,7 @@ func newEnvironment(name string) (Environment, error) {
 		RootPath:        rootPath,
 		EnvDir:          rootPath,
 		ManifestPath:    filepath.Join(rootPath, "ccv.json"),
-		ClaudeConfigDir: rootPath,
+		ClaudeConfigDir: claudeDir,
 		SettingsPath:    filepath.Join(claudeDir, "settings.json"),
 		McpConfigPath:   filepath.Join(rootPath, ".claude.json"),
 	}, nil

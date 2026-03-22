@@ -34,3 +34,15 @@ go.work.sum
 # Local docs artifacts
 docs/claude-code
 docs/cc-mirror
+
+# npm package build artifacts
+npm/platforms/*/bin/ccv
+npm/platforms/*/bin/ccv.exe
+
+# local build output
+build/
+
+# frontend local artifacts
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo

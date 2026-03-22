@@ -21,6 +21,9 @@
 - `05-ccv-web-design.md`
   - `ccv web` 的专项设计
   - 包括 Gin 后端、React 前端、embed 分发、API 边界、页面模型
+- `06-web-frontend-todo.md`
+  - Web 前端实现待办
+  - 包括页面完成度、交互收口和剩余质量项
 
 ## 阅读顺序
 
@@ -32,3 +35,4 @@
 4. `03-ccv-scan-design.md`
 5. `04-ccv-list-design.md`
 6. `05-ccv-web-design.md`
+7. `06-web-frontend-todo.md`

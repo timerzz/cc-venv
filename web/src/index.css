@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: Georgia, serif;
+  --font-sans: "Helvetica Neue", Helvetica, sans-serif;
+
+  --color-ccv-bg: #ece4d7;
+  --color-ccv-bg-soft: #f6f0e7;
+  --color-ccv-panel: #171c20;
+  --color-ccv-panel-soft: #20272d;
+  --color-ccv-panel-strong: #232b31;
+  --color-ccv-ink: #f3ece3;
+  --color-ccv-ink-muted: #9aa3ac;
+  --color-ccv-accent: #e17344;
+  --color-ccv-accent-deep: #cb5d34;
+  --color-ccv-olive: #7e8c67;
+  --color-ccv-danger: #6f3529;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: #1e1b17;
+    background:
+      radial-gradient(circle at top right, rgb(225 115 68 / 0.1), transparent 26%),
+      radial-gradient(circle at bottom left, rgb(126 140 103 / 0.12), transparent 24%),
+      linear-gradient(180deg, #efe8de 0%, var(--color-ccv-bg) 100%);
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+}

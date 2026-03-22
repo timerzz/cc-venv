@@ -44,6 +44,9 @@ func TestCreateLoadListAndRemove(t *testing.T) {
 	if loaded.RootPath != e.RootPath {
 		t.Fatalf("Load().RootPath = %q, want %q", loaded.RootPath, e.RootPath)
 	}
+	if loaded.ClaudeConfigDir != filepath.Join(e.RootPath, ".claude") {
+		t.Fatalf("Load().ClaudeConfigDir = %q, want %q", loaded.ClaudeConfigDir, filepath.Join(e.RootPath, ".claude"))
+	}
 
 	envs, err := List()
 	if err != nil {
@@ -91,6 +94,155 @@ func TestCreateRejectsEmptyName(t *testing.T) {
 	_, err := Create("")
 	if err == nil || !strings.Contains(err.Error(), "environment name is required") {
 		t.Fatalf("Create(\"\") error = %v", err)
+	}
+}
+
+func TestCreateCopiesDefaultClaudeMDWhenPresent(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	defaultClaudeDir := filepath.Join(home, ".claude")
+	if err := os.MkdirAll(defaultClaudeDir, 0o755); err != nil {
+		t.Fatalf("os.MkdirAll() error = %v", err)
+	}
+
+	want := "# Shared Claude Memory\n\nUse shared defaults.\n"
+	if err := os.WriteFile(filepath.Join(defaultClaudeDir, "CLAUDE.md"), []byte(want), 0o644); err != nil {
+		t.Fatalf("os.WriteFile() error = %v", err)
+	}
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	got, err := os.ReadFile(filepath.Join(e.RootPath, ".claude", "CLAUDE.md"))
+	if err != nil {
+		t.Fatalf("os.ReadFile() error = %v", err)
+	}
+
+	if string(got) != want {
+		t.Fatalf("CLAUDE.md = %q, want %q", string(got), want)
+	}
+}
+
+func TestCreateFallsBackToDefaultClaudeMDTemplateWhenMissing(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	got, err := os.ReadFile(filepath.Join(e.RootPath, ".claude", "CLAUDE.md"))
+	if err != nil {
+		t.Fatalf("os.ReadFile() error = %v", err)
+	}
+
+	want := "# demo\n\n"
+	if string(got) != want {
+		t.Fatalf("CLAUDE.md = %q, want %q", string(got), want)
+	}
+}
+
+func TestCreateCopiesDefaultSettingsEnvWhenPresent(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	defaultClaudeDir := filepath.Join(home, ".claude")
+	if err := os.MkdirAll(defaultClaudeDir, 0o755); err != nil {
+		t.Fatalf("os.MkdirAll() error = %v", err)
+	}
+
+	want := config.EnvVars{
+		"ANTHROPIC_API_KEY": "secret",
+		"OPENAI_BASE_URL":   "https://example.test/v1",
+	}
+	if err := config.WriteSettingsJSONEnv(filepath.Join(defaultClaudeDir, "settings.json"), want); err != nil {
+		t.Fatalf("WriteSettingsJSONEnv() error = %v", err)
+	}
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	got, err := config.ReadSettingsJSONEnv(filepath.Join(e.RootPath, ".claude", "settings.json"))
+	if err != nil {
+		t.Fatalf("ReadSettingsJSONEnv() error = %v", err)
+	}
+
+	if len(got) != len(want) {
+		t.Fatalf("len(env) = %d, want %d", len(got), len(want))
+	}
+	for key, value := range want {
+		if got[key] != value {
+			t.Fatalf("env[%q] = %q, want %q", key, got[key], value)
+		}
+	}
+}
+
+func TestCreateFallsBackToEmptySettingsEnvWhenMissing(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	got, err := config.ReadSettingsJSONEnv(filepath.Join(e.RootPath, ".claude", "settings.json"))
+	if err != nil {
+		t.Fatalf("ReadSettingsJSONEnv() error = %v", err)
+	}
+
+	if len(got) != 0 {
+		t.Fatalf("env = %#v, want empty", got)
+	}
+}
+
+func TestCreateCopiesDefaultClaudeJSONWhenPresent(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	want := "{\n  \"mcpServers\": {\n    \"demo\": {\n      \"command\": \"uvx\"\n    }\n  }\n}\n"
+	if err := os.WriteFile(filepath.Join(home, ".claude.json"), []byte(want), 0o644); err != nil {
+		t.Fatalf("os.WriteFile() error = %v", err)
+	}
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	got, err := os.ReadFile(filepath.Join(e.RootPath, ".claude.json"))
+	if err != nil {
+		t.Fatalf("os.ReadFile() error = %v", err)
+	}
+
+	if string(got) != want {
+		t.Fatalf(".claude.json = %q, want %q", string(got), want)
+	}
+}
+
+func TestCreateFallsBackToEmptyClaudeJSONWhenMissing(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	got, err := os.ReadFile(filepath.Join(e.RootPath, ".claude.json"))
+	if err != nil {
+		t.Fatalf("os.ReadFile() error = %v", err)
+	}
+
+	want := "{}\n"
+	if string(got) != want {
+		t.Fatalf(".claude.json = %q, want %q", string(got), want)
 	}
 }
 
@@ -238,7 +390,8 @@ func TestRunClaudeUsesEnvironmentAndRootPath(t *testing.T) {
 		"printf '%s' \"$CCV_ENV_NAME\" > \"$CCV_TEST_OUTPUT_DIR/ccv_env_name.txt\"\n" +
 		"printf '%s' \"$CCV_ENV_ROOT\" > \"$CCV_TEST_OUTPUT_DIR/ccv_env_root.txt\"\n" +
 		"printf '%s' \"$CCV_ACTIVE\" > \"$CCV_TEST_OUTPUT_DIR/ccv_active.txt\"\n" +
-		"printf '%s' \"$TEST_USER_VAR\" > \"$CCV_TEST_OUTPUT_DIR/test_user_var.txt\"\n"
+		"printf '%s' \"$TEST_USER_VAR\" > \"$CCV_TEST_OUTPUT_DIR/test_user_var.txt\"\n" +
+		"printf '%s\n' \"$@\" > \"$CCV_TEST_OUTPUT_DIR/args.txt\"\n"
 	if err := os.WriteFile(claudePath, []byte(script), 0o755); err != nil {
 		t.Fatalf("os.WriteFile() error = %v", err)
 	}
@@ -266,6 +419,12 @@ func TestRunClaudeUsesEnvironmentAndRootPath(t *testing.T) {
 	assertFileEquals(t, filepath.Join(outDir, "ccv_env_root.txt"), e.RootPath)
 	assertFileEquals(t, filepath.Join(outDir, "ccv_active.txt"), "1")
 	assertFileEquals(t, filepath.Join(outDir, "test_user_var.txt"), "from-run")
+	assertFileEquals(
+		t,
+		filepath.Join(outDir, "args.txt"),
+		"--append-system-prompt-file\n"+filepath.Join(e.ClaudeConfigDir, "CLAUDE.md")+"\n"+
+			"--mcp-config\n"+e.McpConfigPath+"\n",
+	)
 }
 
 func TestRemoveRequiresConfirmationWhenNotForced(t *testing.T) {

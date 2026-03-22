@@ -119,12 +119,12 @@ ccv active <name>
 其中：
 
 - `CLAUDE_CONFIG_DIR` 应指向该命名环境的 Claude 配置根目录
-- 在当前原生兼容模型下，它应对应环境根目录，而不是旧的 `config/` 子目录
+- 在当前原生兼容模型下，它应对应环境内的 `.claude/` 目录，而不是环境根目录
 
 例如：
 
 ```text
-CLAUDE_CONFIG_DIR=/home/user/.ccv/envs/team-base
+CLAUDE_CONFIG_DIR=/home/user/.ccv/envs/team-base/.claude
 CCV_ENV_NAME=team-base
 CCV_ENV_ROOT=/home/user/.ccv/envs/team-base
 CCV_ACTIVE=1
@@ -230,10 +230,12 @@ cd "$CCV_ENV_ROOT"
 - 合并环境变量
 - 注入 `CLAUDE_CONFIG_DIR` 和 `CCV_*`
 - 保留当前工作目录
+- `run` 启动 `claude` 时显式追加环境级 `CLAUDE.md`
+- `run` 启动 `claude` 时显式指定环境级 `.claude.json`
 
 两者差异只在最后一步：
 
 - `active` 启动交互式 shell
-- `run` 直接启动 `claude`
+- `run` 直接启动 `claude --append-system-prompt-file <env>/.claude/CLAUDE.md --mcp-config <env>/.claude.json`
 
 因此实现上应尽量复用同一套“执行上下文准备”逻辑，避免行为漂移。

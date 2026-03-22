@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/timerzz/cc-venv/internal/config"
 )
@@ -19,7 +20,14 @@ func RunClaude(e Environment) error {
 		return err
 	}
 
-	cmd := exec.Command("claude")
+	args := []string{
+		"--append-system-prompt-file",
+		filepath.Join(e.ClaudeConfigDir, "CLAUDE.md"),
+		"--mcp-config",
+		e.McpConfigPath,
+	}
+
+	cmd := exec.Command("claude", args...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

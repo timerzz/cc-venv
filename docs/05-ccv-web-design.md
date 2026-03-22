@@ -17,7 +17,7 @@
 第一版建议技术栈：
 
 - 后端：`Gin`
-- 前端：`Vite + React + shadcn/ui`
+- 前端：`Vite + React + TypeScript + Tailwind CSS + i18next`
 - 分发：前端构建产物通过 Go `embed` 嵌入后端
 
 这套方案的目标是：
@@ -68,15 +68,17 @@ Web 的后端应直接复用：
 ```text
 cc-venv/
 ├── internal/
-│   └── webui/
+│   └── web/
 │       ├── server.go                  # HTTP服务入口、embed嵌入
 │       ├── routes.go                  # 路由注册
-│       ├── handlers_env.go            # 环境CRUD handlers
-│       ├── handlers_llm.go            # LLM配置 handlers
-│       ├── handlers_mcp.go            # MCP管理 handlers
-│       ├── handlers_skill.go          # Skills管理 handlers
-│       ├── handlers_import_export.go  # 导入导出 handlers
-│       └── response.go                # Response[T] 结构体
+│       ├── static/                    # embed的静态资源或占位页
+│       └── handlers/
+│           ├── env.go                 # 环境CRUD handlers
+│           ├── llm.go                 # LLM配置 handlers
+│           ├── mcp.go                 # MCP管理 handlers
+│           ├── skill.go               # Skills管理 handlers
+│           ├── import_export.go       # 导入导出 handlers
+│           └── response.go            # Response[T] 结构体
 └── web/                               # 前端项目
     ├── index.html
     ├── package.json
@@ -84,14 +86,16 @@ cc-venv/
     └── src/
         ├── main.tsx
         ├── app.tsx
-        ├── lib/api.ts
+        ├── hooks/
+        ├── layouts/
+        ├── lib/api/
         ├── pages/
         └── components/
 ```
 
 其中：
 
-- `internal/webui` 负责 HTTP 服务和 API
+- `internal/web` 负责 HTTP 服务和 API
 - `web/` 负责前端页面和构建
 
 ---
@@ -211,12 +215,11 @@ POST   /api/envs/import               # 导入环境
 }
 ```
 
-### 6.2 LLM 供应商管理
+### 6.2 LLM 配置管理
 
 ```
 GET    /api/envs/:name/llm            # 获取LLM配置
 PUT    /api/envs/:name/llm            # 更新LLM配置
-GET    /api/llm/providers             # 获取支持的供应商列表
 ```
 
 #### GET /api/envs/:name/llm
@@ -227,7 +230,6 @@ GET    /api/llm/providers             # 获取支持的供应商列表
 {
   "code": 0,
   "data": {
-    "provider": "anthropic",
     "apiKey": "sk-***",              // 脱敏显示
     "baseUrl": "",
     "models": {
@@ -246,7 +248,6 @@ GET    /api/llm/providers             # 获取支持的供应商列表
 
 ```json
 {
-  "provider": "anthropic",
   "apiKey": "sk-xxx",
   "baseUrl": "https://api.anthropic.com",
   "models": {
@@ -254,32 +255,6 @@ GET    /api/llm/providers             # 获取支持的供应商列表
     "sonnet": "claude-sonnet-4-6",
     "opus": "claude-opus-4-6",
     "haiku": "claude-haiku-4-5"
-  }
-}
-```
-
-#### GET /api/llm/providers
-
-响应：
-
-```json
-{
-  "code": 0,
-  "data": {
-    "providers": [
-      {
-        "id": "anthropic",
-        "name": "Anthropic",
-        "baseUrl": "https://api.anthropic.com",
-        "models": ["claude-sonnet-4-6", "claude-opus-4-6", "claude-haiku-4-5"]
-      },
-      {
-        "id": "openai",
-        "name": "OpenAI",
-        "baseUrl": "https://api.openai.com",
-        "models": ["gpt-4", "gpt-4o", "gpt-3.5-turbo"]
-      }
-    ]
   }
 }
 ```
@@ -303,14 +278,17 @@ DELETE /api/envs/:name/mcp/:server    # 删除指定MCP服务器
   "data": {
     "servers": {
       "filesystem": {
+        "type": "stdio",
         "command": "npx",
         "args": ["-y", "@anthropic-ai/mcp-server-filesystem", "/path"],
         "env": {}
       },
-      "my-server": {
-        "command": "node",
-        "args": ["server.js"],
-        "env": {"API_KEY": "xxx"}
+      "context7": {
+        "type": "http",
+        "url": "https://mcp.context7.com/mcp",
+        "headers": {
+          "CONTEXT7_API_KEY": "ctx7sk-xxx"
+        }
       }
     }
   }
@@ -325,6 +303,7 @@ DELETE /api/envs/:name/mcp/:server    # 删除指定MCP服务器
 {
   "name": "filesystem",
   "config": {
+    "type": "stdio",
     "command": "npx",
     "args": ["-y", "@anthropic-ai/mcp-server-filesystem", "/path"],
     "env": {}
@@ -339,9 +318,11 @@ DELETE /api/envs/:name/mcp/:server    # 删除指定MCP服务器
 ```json
 {
   "config": {
-    "command": "npx",
-    "args": ["-y", "@anthropic-ai/mcp-server-filesystem", "/new-path"],
-    "env": {}
+    "type": "http",
+    "url": "https://mcp.context7.com/mcp",
+    "headers": {
+      "CONTEXT7_API_KEY": "ctx7sk-xxx"
+    }
   }
 }
 ```
@@ -350,7 +331,7 @@ DELETE /api/envs/:name/mcp/:server    # 删除指定MCP服务器
 
 ```
 GET    /api/envs/:name/skills                 # 获取skills列表
-POST   /api/envs/:name/skills                 # 添加skill（zip上传或URL下载）
+POST   /api/envs/:name/skills                 # 上传zip压缩包安装skill
 DELETE /api/envs/:name/skills/:skill          # 删除skill
 ```
 
@@ -378,25 +359,9 @@ DELETE /api/envs/:name/skills/:skill          # 删除skill
 
 #### POST /api/envs/:name/skills
 
-支持两种方式：
-
-**方式1: URL下载**
-
-请求 (application/json):
-
-```json
-{
-  "url": "https://github.com/user/skill-repo/archive/main.zip"
-}
-```
-
-**方式2: 文件上传**
-
 请求 (multipart/form-data):
 
-```
-file: skill.zip
-```
+`file: skill.zip`
 
 响应：
 
@@ -410,7 +375,32 @@ file: skill.zip
 }
 ```
 
-### 6.5 导入导出
+说明：
+
+- 上传同名 Skill 时，服务端会覆盖旧目录
+- Web 前端使用文件上传，不再支持通过 URL 安装 Skill
+
+### 6.5 文件类资源管理
+
+```
+GET    /api/envs/:name/resources/:kind              # 获取 agents / commands / rules 文件列表
+GET    /api/envs/:name/resources/:kind/content      # 获取文件内容
+PUT    /api/envs/:name/resources/:kind/content      # 新建或更新文件
+DELETE /api/envs/:name/resources/:kind/content      # 删除文件
+```
+
+其中：
+
+- `:kind = agents`
+- `:kind = commands`
+- `:kind = rules`
+
+规则说明：
+
+- `agents` 和 `commands` 只支持一级 Markdown 文件
+- `rules` 支持递归路径，例如 `backend/api/auth`
+
+### 6.6 导入导出
 
 ```
 POST   /api/envs/:name/export         # 导出环境
@@ -436,7 +426,10 @@ POST   /api/envs/import               # 导入环境
 
 ```
 file: env.tar.gz
+force: true|false
 ```
+
+导入成功后，前端应刷新环境列表并自动选中新导入的环境。
 
 ---
 
@@ -445,7 +438,7 @@ file: env.tar.gz
 前端构建产物嵌入到 Go 二进制中：
 
 ```go
-//go:embed all:web/dist
+//go:embed all:static
 var staticFS embed.FS
 ```
 
@@ -466,6 +459,7 @@ var staticFS embed.FS
 生产模式：
 
 - 前端构建: `npm run build` -> `web/dist/`
+- 构建产物同步: `web/dist/` -> `internal/web/static/`
 - 后端编译: `go build ./cmd/ccv`
 - 运行: `ccv web` (单二进制，嵌入前端)
 
@@ -480,11 +474,16 @@ ccv web --no-open    # 不自动打开浏览器
 ccv web --dev        # 开发模式（不嵌入前端，仅API）
 ```
 
+服务启动后会打印：
+
+- `Local: http://localhost:<port>/`
+- `Network: http://<LAN-IP>:<port>/`
+
 ---
 
 ## 10. 实现边界
 
-`webui` 包的职责：
+`web` 包的职责：
 
 - 启动 HTTP 服务
 - 注册路由
@@ -493,7 +492,7 @@ ccv web --dev        # 开发模式（不嵌入前端，仅API）
 
 约束：
 
-- 不在 `webui` 层重复实现环境读写逻辑
+- 不在 `web` 层重复实现环境读写逻辑
 - 继续以文件系统作为事实来源
 - 第一版不引入数据库
 
@@ -530,3 +529,16 @@ ccv web --dev        # 开发模式（不嵌入前端，仅API）
 - 环境详情中的扫描口径应与 `03-ccv-scan-design.md` 一致
 
 Web 不应引入独立的环境模型、扫描口径或状态源。
+
+当前前端已实现的页面包括：
+
+- `Overview`
+- `LLM`
+- `MCP`
+- `Skills`
+- `Env Vars`
+- `CLAUDE.md`
+- `Agents`
+- `Commands`
+- `Rules`
+- `Import / Export`

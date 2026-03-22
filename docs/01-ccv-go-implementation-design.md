@@ -67,8 +67,11 @@ cc-venv/
 │   │   └── import.go
 │   ├── platform/
 │   │   └── home.go
-│   └── webui/
-│       └── server.go
+│   └── web/
+│       ├── server.go
+│       ├── routes.go
+│       └── handlers/
+│           └── env.go
 ├── go.mod
 └── go.sum
 ```
@@ -165,7 +168,7 @@ type Environment struct {
 - 不依赖 `env`
 - 不感知命令语义
 
-### `internal/webui`
+### `internal/web`
 
 职责：
 
@@ -217,7 +220,7 @@ type Environment struct {
 cli -> env
 cli -> exporter -> env + config + archive
 cli -> importer -> env + config + archive
-cli -> webui -> env + config
+cli -> web -> env + config
 ```
 
 补充约束：
@@ -225,7 +228,7 @@ cli -> webui -> env + config
 - `cli` 不直接操作环境目录
 - `config` 不负责启动进程
 - `env` 不负责 tar.gz 归档
-- `webui` 不重复实现环境读写逻辑
+- `web` 不重复实现环境读写逻辑
 
 ---
 

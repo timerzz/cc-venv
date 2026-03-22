@@ -10,6 +10,9 @@ func newRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "ccv",
 		Short: "Manage named Claude Code virtual environments",
+		CompletionOptions: cobra.CompletionOptions{
+			DisableDefaultCmd: true,
+		},
 	}
 
 	rootCmd.AddCommand(
