@@ -1,4 +1,7 @@
 # cc-venv
+![GitHub License](https://img.shields.io/github/license/timerzz/cc-venv)
+![Static Badge](https://img.shields.io/badge/github-repo-blue%3Flogo%3Dgithub?color=blue)
+
 
 English | [简体中文](./README_ZH.md)
 
