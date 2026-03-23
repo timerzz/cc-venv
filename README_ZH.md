@@ -1,4 +1,11 @@
 # cc-venv
+![GitHub License](https://img.shields.io/github/license/timerzz/cc-venv)
+![Static Badge](https://img.shields.io/badge/github-repo-blue%3Flogo%3Dgithub?color=blue)
+
+
+
+
+
 
 [English](./README.md) | 简体中文
 
@@ -48,17 +55,16 @@
 
 ## 和 cc-mirror 的对比
 
-[`cc-mirror`](https://github.com/numman-ali/cc-mirror) 的定位是“创建多个隔离的 Claude Code 变体”，核心在于把 Claude Code 克隆成独立实例，并配置不同 provider、prompt pack 和增强能力。它非常适合“多变体分发”和 provider 场景。
+[`cc-mirror`](https://github.com/numman-ali/cc-mirror) 和 `cc-venv` 都能提供 Claude Code 隔离能力，但优化方向不同。
 
-`cc-venv` 的侧重点不同：
-
-- `cc-venv` 内嵌了 Web 管理界面
-  - 直接 `ccv web` 就能在浏览器里管理环境，不需要额外前端服务
-- `cc-venv` 不只隔离 API 配置
-  - 还隔离 `Skills`、`MCP`、`Rules`、`Agents`、`Commands`、`CLAUDE.md` 和环境变量
-- `cc-venv` 支持整个环境的导入 / 导出
-  - 在新机器上可以直接恢复完整环境
-  - 不需要再一个一个重新装 `Skills`、重配 `MCP`、重写 `Rules`
+| 能力 | `cc-venv` | `cc-mirror` |
+| --- | --- | --- |
+| 多个隔离的 Claude Code 环境 | ✅ | ✅ |
+| 内嵌 Web UI（`ccv web`） | ✅ | ❌ |
+| 完整环境导入 / 导出 | ✅ | ❌ |
+| 隔离 `CLAUDE.md`、环境变量、`Skills`、`MCP`、`Agents`、`Commands`、`Rules` | ✅ | ✅ |
+| 每个环境独立 Claude Code 二进制 | ❌ | ✅ |
+| 面向 provider / prompt-pack / tweak 的变体管理 | ❌ | ✅ |
 
 如果你的目标是：
 

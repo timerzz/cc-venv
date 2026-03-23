@@ -48,18 +48,16 @@ Switching environments does not affect your default Claude Code configuration.
 
 ## Compared with cc-mirror
 
-[`cc-mirror`](https://github.com/numman-ali/cc-mirror) is positioned as a way to create multiple isolated Claude Code variants. Its focus is cloning Claude Code into separate instances and configuring different providers, prompt packs, and enhancements. It is a strong fit for multi-variant distribution and provider-oriented setups.
+[`cc-mirror`](https://github.com/numman-ali/cc-mirror) and `cc-venv` both provide Claude Code isolation, but they optimize for different things.
 
-`cc-venv` focuses on a different use case:
-
-- `cc-venv` ships with an embedded Web UI
-  - run `ccv web` and manage environments directly in the browser
-  - no separate frontend service is required
-- `cc-venv` isolates more than API configuration
-  - it isolates `Skills`, `MCP`, `Rules`, `Agents`, `Commands`, `CLAUDE.md`, and environment variables
-- `cc-venv` supports full environment import and export
-  - you can restore a complete environment on a new machine
-  - no need to reinstall `Skills` one by one or rebuild `MCP` and `Rules` manually
+| Capability | `cc-venv` | `cc-mirror` |
+| --- | --- | --- |
+| Multiple isolated Claude Code environments | ✅ | ✅ |
+| Embedded Web UI (`ccv web`) | ✅ | ❌ |
+| Full environment import / export | ✅ | ❌ |
+| Isolate `CLAUDE.md`, env vars, `Skills`, `MCP`, `Agents`, `Commands`, and `Rules` | ✅ | ✅ |
+| Separate Claude Code binary per environment | ❌ | ✅ |
+| Provider / prompt-pack / tweak-oriented variant management | ❌ | ✅ |
 
 If your goal is to:
 
