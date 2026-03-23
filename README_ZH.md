@@ -53,37 +53,6 @@
 
 切换环境时，不会影响你默认的 Claude Code 配置。
 
-## 和 cc-mirror 的对比
-
-[`cc-mirror`](https://github.com/numman-ali/cc-mirror) 和 `cc-venv` 都能提供 Claude Code 隔离能力，但优化方向不同。
-
-| 能力 | `cc-venv` | `cc-mirror` |
-| --- | --- | --- |
-| 多个隔离的 Claude Code 环境 | ✅ | ✅ |
-| 内嵌 Web UI（`ccv web`） | ✅ | ❌ |
-| 完整环境导入 / 导出 | ✅ | ❌ |
-| 隔离 `CLAUDE.md`、环境变量、`Skills`、`MCP`、`Agents`、`Commands`、`Rules` | ✅ | ✅ |
-| 每个环境独立 Claude Code 二进制 | ❌ | ✅ |
-| 面向 provider / prompt-pack / tweak 的变体管理 | ❌ | ✅ |
-
-如果你的目标是：
-
-- 维护几套不同用途的 Claude 工作流
-- 快速切换
-- 保持默认 Claude 配置干净
-- 能把整套环境迁移到另一台机器
-
-那 `cc-venv` 更贴近这个使用方式。
-
-## 核心能力
-
-- 创建命名环境
-- 进入环境 shell
-- 在环境中运行 Claude Code
-- 通过 Web 页面管理环境
-- 隔离 `LLM`、环境变量、`MCP`、`Skills`、`Agents`、`Commands`、`Rules`
-- 导出整个环境
-- 在新机器导入环境并快速恢复
 
 ## 快速使用
 
@@ -123,11 +92,46 @@ ccv web
 ccv list
 # 进入coding虚拟环境中的claude code
 ccv run coding
+# 透传额外参数给 claude
+ccv run coding --model claude-opus -p "总结一下这个仓库"
 # 导出coding虚拟环境的所有配置、包括skills、mcp等
 ccv exprot coding
 ```
 <img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
 
+
+
+## 和 cc-mirror 的对比
+
+[`cc-mirror`](https://github.com/numman-ali/cc-mirror) 和 `cc-venv` 都能提供 Claude Code 隔离能力，但优化方向不同。
+
+| 能力 | `cc-venv` | `cc-mirror` |
+| --- | --- | --- |
+| 多个隔离的 Claude Code 环境 | ✅ | ✅ |
+| 内嵌 Web UI（`ccv web`） | ✅ | ❌ |
+| 完整环境导入 / 导出 | ✅ | ❌ |
+| 隔离 `CLAUDE.md`、环境变量、`Skills`、`MCP`、`Agents`、`Commands`、`Rules` | ✅ | ✅ |
+| 每个环境独立 Claude Code 二进制 | ❌ | ✅ |
+| 面向 provider / prompt-pack / tweak 的变体管理 | ❌ | ✅ |
+
+如果你的目标是：
+
+- 维护几套不同用途的 Claude 工作流
+- 快速切换
+- 保持默认 Claude 配置干净
+- 能把整套环境迁移到另一台机器
+
+那 `cc-venv` 更贴近这个使用方式。
+
+## 核心能力
+
+- 创建命名环境
+- 进入环境 shell
+- 在环境中运行 Claude Code
+- 通过 Web 页面管理环境
+- 隔离 `LLM`、环境变量、`MCP`、`Skills`、`Agents`、`Commands`、`Rules`
+- 导出整个环境
+- 在新机器导入环境并快速恢复
 
 ## 环境里隔离的内容
 

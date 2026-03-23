@@ -14,7 +14,7 @@ type ExecSpec struct {
 	Env []string
 }
 
-func RunClaude(e Environment) error {
+func RunClaude(e Environment, extraArgs []string) error {
 	spec, err := prepareExecSpec(e, WorkingDirCurrent)
 	if err != nil {
 		return err
@@ -26,6 +26,7 @@ func RunClaude(e Environment) error {
 		"--mcp-config",
 		e.McpConfigPath,
 	}
+	args = append(args, extraArgs...)
 
 	cmd := exec.Command("claude", args...)
 	cmd.Stdin = os.Stdin

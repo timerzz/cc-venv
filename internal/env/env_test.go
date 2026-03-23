@@ -409,7 +409,7 @@ func TestRunClaudeUsesEnvironmentAndRootPath(t *testing.T) {
 	}
 	defer func() { _ = os.Chdir(oldWD) }()
 
-	if err := RunClaude(e); err != nil {
+	if err := RunClaude(e, nil); err != nil {
 		t.Fatalf("RunClaude() error = %v", err)
 	}
 
@@ -424,6 +424,40 @@ func TestRunClaudeUsesEnvironmentAndRootPath(t *testing.T) {
 		filepath.Join(outDir, "args.txt"),
 		"--append-system-prompt-file\n"+filepath.Join(e.ClaudeConfigDir, "CLAUDE.md")+"\n"+
 			"--mcp-config\n"+e.McpConfigPath+"\n",
+	)
+}
+
+func TestRunClaudeAppendsPassthroughArgs(t *testing.T) {
+	home := t.TempDir()
+	setHome(t, home)
+
+	e, err := Create("demo")
+	if err != nil {
+		t.Fatalf("Create() error = %v", err)
+	}
+
+	toolDir := t.TempDir()
+	outDir := t.TempDir()
+	claudePath := filepath.Join(toolDir, "claude")
+	script := "#!/bin/sh\n" +
+		"printf '%s\n' \"$@\" > \"$CCV_TEST_OUTPUT_DIR/args.txt\"\n"
+	if err := os.WriteFile(claudePath, []byte(script), 0o755); err != nil {
+		t.Fatalf("os.WriteFile() error = %v", err)
+	}
+
+	t.Setenv("PATH", toolDir+string(os.PathListSeparator)+os.Getenv("PATH"))
+	t.Setenv("CCV_TEST_OUTPUT_DIR", outDir)
+
+	if err := RunClaude(e, []string{"--model", "claude-opus", "-p", "hello"}); err != nil {
+		t.Fatalf("RunClaude() error = %v", err)
+	}
+
+	assertFileEquals(
+		t,
+		filepath.Join(outDir, "args.txt"),
+		"--append-system-prompt-file\n"+filepath.Join(e.ClaudeConfigDir, "CLAUDE.md")+"\n"+
+			"--mcp-config\n"+e.McpConfigPath+"\n"+
+			"--model\nclaude-opus\n-p\nhello\n",
 	)
 }
 

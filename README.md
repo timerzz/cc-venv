@@ -49,38 +49,6 @@ That makes it easy to maintain separate environments such as:
 
 Switching environments does not affect your default Claude Code configuration.
 
-## Compared with cc-mirror
-
-[`cc-mirror`](https://github.com/numman-ali/cc-mirror) and `cc-venv` both provide Claude Code isolation, but they optimize for different things.
-
-| Capability | `cc-venv` | `cc-mirror` |
-| --- | --- | --- |
-| Multiple isolated Claude Code environments | ✅ | ✅ |
-| Embedded Web UI (`ccv web`) | ✅ | ❌ |
-| Full environment import / export | ✅ | ❌ |
-| Isolate `CLAUDE.md`, env vars, `Skills`, `MCP`, `Agents`, `Commands`, and `Rules` | ✅ | ✅ |
-| Separate Claude Code binary per environment | ❌ | ✅ |
-| Provider / prompt-pack / tweak-oriented variant management | ❌ | ✅ |
-
-If your goal is to:
-
-- maintain multiple Claude workflows for different purposes
-- switch quickly
-- keep the default Claude configuration clean
-- move a complete environment to another machine
-
-then `cc-venv` is the closer fit.
-
-## Core capabilities
-
-- create named environments
-- enter an environment shell
-- run Claude Code inside an environment
-- manage environments through a Web UI
-- isolate `LLM`, environment variables, `MCP`, `Skills`, `Agents`, `Commands`, and `Rules`
-- export a full environment
-- import and restore that environment on a new machine
-
 ## Quick start
 
 ### Option 1: Install globally with npm
@@ -119,11 +87,46 @@ ccv web
 ccv list
 # Run Claude Code inside the coding environment
 ccv run coding
+# Pass extra arguments through to Claude Code
+ccv run coding --model claude-opus -p "summarize this repo"
 # Export the full coding environment, including Skills and MCP configuration
 ccv export coding
 ```
 
 <img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
+
+## Compared with cc-mirror
+
+[`cc-mirror`](https://github.com/numman-ali/cc-mirror) and `cc-venv` both provide Claude Code isolation, but they optimize for different things.
+
+| Capability | `cc-venv` | `cc-mirror` |
+| --- | --- | --- |
+| Multiple isolated Claude Code environments | ✅ | ✅ |
+| Embedded Web UI (`ccv web`) | ✅ | ❌ |
+| Full environment import / export | ✅ | ❌ |
+| Isolate `CLAUDE.md`, env vars, `Skills`, `MCP`, `Agents`, `Commands`, and `Rules` | ✅ | ✅ |
+| Separate Claude Code binary per environment | ❌ | ✅ |
+| Provider / prompt-pack / tweak-oriented variant management | ❌ | ✅ |
+
+If your goal is to:
+
+- maintain multiple Claude workflows for different purposes
+- switch quickly
+- keep the default Claude configuration clean
+- move a complete environment to another machine
+
+then `cc-venv` is the closer fit.
+
+## Core capabilities
+
+- create named environments
+- enter an environment shell
+- run Claude Code inside an environment
+- manage environments through a Web UI
+- isolate `LLM`, environment variables, `MCP`, `Skills`, `Agents`, `Commands`, and `Rules`
+- export a full environment
+- import and restore that environment on a new machine
+
 
 ## What is isolated inside an environment
 
