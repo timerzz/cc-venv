@@ -1,6 +1,6 @@
 {
   "name": "@timerzz/ccv",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Claude Code virtual environment manager",
   "license": "MIT",
   "bin": {
@@ -11,12 +11,12 @@
     "README.md"
   ],
   "optionalDependencies": {
-    "@timerzz/ccv-darwin-arm64": "0.1.0",
-    "@timerzz/ccv-darwin-x64": "0.1.0",
-    "@timerzz/ccv-linux-arm64": "0.1.0",
-    "@timerzz/ccv-linux-x64": "0.1.0",
-    "@timerzz/ccv-win32-arm64": "0.1.0",
-    "@timerzz/ccv-win32-x64": "0.1.0"
+    "@timerzz/ccv-darwin-arm64": "0.2.0",
+    "@timerzz/ccv-darwin-x64": "0.2.0",
+    "@timerzz/ccv-linux-arm64": "0.2.0",
+    "@timerzz/ccv-linux-x64": "0.2.0",
+    "@timerzz/ccv-win32-arm64": "0.2.0",
+    "@timerzz/ccv-win32-x64": "0.2.0"
   },
   "publishConfig": {
     "access": "public"

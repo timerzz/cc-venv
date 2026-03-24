@@ -65,9 +65,20 @@ npm install -g @timerzz/ccv
 安装完成后可以直接使用：
 
 ```bash
-ccv list
+# 创建一个名为coding的虚拟环境
 ccv create coding
+# 查看当前所有虚拟环境
+ccv list
+# 进入coding虚拟环境中的claude code
+ccv run coding
+# 当然也可以透传额外参数给 claude
+ccv run coding --model claude-opus -p "总结一下这个仓库"
+# 在ccv的虚拟环境的claude中，可以直接安装插件等，安装的插件只会保存在这个虚拟环境中
+/plugin marketplace add JimLiu/baoyu-skills
+# 打开web页面对虚拟环境进行管理和配置
 ccv web
+# 导出coding虚拟环境的所有配置、包括skills、mcp等
+ccv exprot coding
 ```
 
 ### 方式二：直接下载 Go 二进制
@@ -81,22 +92,7 @@ ccv web
 - Windows x64: `ccv-windows-amd64.exe`
 - Windows arm64: `ccv-windows-arm64.exe`
 
-常用命令：
-
-```bash
-# 创建一个名为coding的虚拟环境
-ccv create coding
-# 打开web页面对虚拟环境进行管理和配置
-ccv web
-# 查看当前所有虚拟环境
-ccv list
-# 进入coding虚拟环境中的claude code
-ccv run coding
-# 透传额外参数给 claude
-ccv run coding --model claude-opus -p "总结一下这个仓库"
-# 导出coding虚拟环境的所有配置、包括skills、mcp等
-ccv exprot coding
-```
+web页面：
 <img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
 
 
@@ -202,4 +198,10 @@ make all
 
 ```bash
 make npm-packages
+```
+
+发布前同步所有 npm 包版本：
+
+```bash
+bash scripts/bump-npm-version.sh 0.1.1
 ```

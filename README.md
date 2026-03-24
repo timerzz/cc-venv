@@ -60,9 +60,21 @@ npm install -g @timerzz/ccv
 After installation:
 
 ```bash
-ccv list
+# Create a virtual environment named coding
 ccv create coding
+# List all current virtual environments
+ccv list
+# Run Claude Code inside the coding environment
+ccv run coding
+# Pass extra arguments through to Claude Code
+ccv run coding --model claude-opus -p "summarize this repo"
+# Inside Claude Code running in a ccv environment, you can install plugins directly.
+# Those plugins are stored only in that virtual environment.
+/plugin marketplace add JimLiu/baoyu-skills
+# Open the Web UI to manage and configure environments
 ccv web
+# Export the full coding environment, including Skills and MCP configuration
+ccv export coding
 ```
 
 ### Option 2: Download a Go binary directly
@@ -76,22 +88,7 @@ Download the binary for your platform from GitHub Releases and add it to your `P
 - Windows x64: `ccv-windows-amd64.exe`
 - Windows arm64: `ccv-windows-arm64.exe`
 
-Common commands:
-
-```bash
-# Create a virtual environment named coding
-ccv create coding
-# Open the Web UI to manage and configure environments
-ccv web
-# List all current virtual environments
-ccv list
-# Run Claude Code inside the coding environment
-ccv run coding
-# Pass extra arguments through to Claude Code
-ccv run coding --model claude-opus -p "summarize this repo"
-# Export the full coding environment, including Skills and MCP configuration
-ccv export coding
-```
+Web UI:
 
 <img width="2485" height="1268" alt="web" src="https://github.com/user-attachments/assets/ba6f3240-dac8-414a-8343-ff8c8e5aa488" />
 
@@ -197,4 +194,10 @@ Prepare npm distribution packages:
 
 ```bash
 make npm-packages
+```
+
+Sync all npm package versions before publishing:
+
+```bash
+bash scripts/bump-npm-version.sh 0.1.1
 ```
